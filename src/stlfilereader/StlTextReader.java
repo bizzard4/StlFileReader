@@ -2,6 +2,9 @@ package stlfilereader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
@@ -22,14 +25,33 @@ public class StlTextReader extends StlReader {
 	 */
 	@Override
 	public StlObject createStlObject(String filename) throws IOException, StlReaderException, NumberFormatException {
+		BufferedReader br = Files.newBufferedReader(FileSystems.getDefault().getPath(filename));	
+		return getStlObjectFromReader(br);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public StlObject createStlObject(InputStream stream) throws IOException, StlReaderException, NumberFormatException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+		return getStlObjectFromReader(br);
+	}
+	
+	/**
+	 * Create the final stl object from a buffered reader.
+	 * @param reader
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
+	private StlObject getStlObjectFromReader(BufferedReader reader) throws NumberFormatException, IOException {
 		StlObject obj = new StlObject();
-		
-		BufferedReader br = Files.newBufferedReader(FileSystems.getDefault().getPath(filename));
 		
 		String line = "";
 		int p = 0;
 		StlFacet facet = null;
-		while ((line = br.readLine()) != null) {
+		while ((line = reader.readLine()) != null) {
 			line = line.trim();
 			if (line.startsWith("solid")) { // Solid name
 				obj.name = line.split(" ")[1];
@@ -78,4 +100,6 @@ public class StlTextReader extends StlReader {
 		float p3 = Float.parseFloat(split[3]);
 		return new Point3D(p1, p2, p3);
 	}
+
+
 }

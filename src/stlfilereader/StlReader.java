@@ -1,6 +1,7 @@
 package stlfilereader;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import stlfilereader.model.StlObject;
 
@@ -19,4 +20,14 @@ public abstract class StlReader {
 	 * @return Stl obejct.
 	 */
 	public abstract StlObject createStlObject(String filename) throws IOException, StlReaderException, NumberFormatException;
+	
+	/**
+	 * Abstract method to read file and create STL object from a stream.
+	 * @param stream STL file stream
+	 * @return Stl object
+	 * @throws IOException
+	 * @throws StlReaderException
+	 * @throws NumberFormatException
+	 */
+	public abstract StlObject createStlObject(InputStream stream) throws IOException, StlReaderException, NumberFormatException; 
 }

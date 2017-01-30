@@ -43,4 +43,12 @@ public class StlObject {
 	public List<StlFacet> getFacets() {
 		return facets;
 	}
+	
+	/**
+	 * Object description.
+	 * @return Return the name and facet count of the stl object.
+	 */
+	public String toString() {
+		return "Name=" + name + " Facets count=" + facets.size();
+	}
 }
